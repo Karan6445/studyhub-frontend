@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../api/axios";
 
 import {
   User,
@@ -14,17 +14,13 @@ import {
 
 const AdminRegister = () => {
 
-
   const navigate = useNavigate();
-
 
   const [showPassword,setShowPassword] = useState(false);
 
   const [showConfirm,setShowConfirm] = useState(false);
 
-
   const [loading,setLoading] = useState(false);
-
 
 
   const [formData,setFormData] = useState({
@@ -35,8 +31,6 @@ const AdminRegister = () => {
     confirmPassword:"",
 
   });
-
-
 
 
 
@@ -55,36 +49,28 @@ const AdminRegister = () => {
 
 
 
-
-
-
   const handleSubmit = async(e)=>{
 
     e.preventDefault();
 
 
-
     if(formData.password !== formData.confirmPassword){
 
       alert("Passwords do not match");
-
       return;
 
     }
 
 
 
-
     try{
-
 
       setLoading(true);
 
 
+      await api.post(
 
-      await axios.post(
-
-        "http://localhost:5000/api/admin/register",
+        "/admin/register",
 
         {
 
@@ -99,16 +85,17 @@ const AdminRegister = () => {
       );
 
 
-
       alert("Registration Successful");
 
 
       navigate("/admin/login");
 
 
-
     }
     catch(error){
+
+
+      console.log(error);
 
 
       alert(
@@ -123,12 +110,9 @@ const AdminRegister = () => {
     }
     finally{
 
-
       setLoading(false);
 
-
     }
-
 
   };
 
@@ -136,15 +120,9 @@ const AdminRegister = () => {
 
 
 
-
-
   return (
 
-
-
     <div
-
-
 
       className="
       min-h-screen
@@ -158,8 +136,6 @@ const AdminRegister = () => {
       bg-center
       "
 
-
-
       style={{
 
         backgroundImage:
@@ -167,21 +143,10 @@ const AdminRegister = () => {
 
       }}
 
-
-
     >
 
 
-
-
-
-
-      {/* Background Overlay */}
-
-
-
       <div
-
 
         className="
         absolute
@@ -196,15 +161,7 @@ const AdminRegister = () => {
 
 
 
-
-
-
-      {/* Glow Effects */}
-
-
-
       <div
-
 
         className="
         absolute
@@ -222,10 +179,7 @@ const AdminRegister = () => {
 
 
 
-
-
       <div
-
 
         className="
         absolute
@@ -245,17 +199,7 @@ const AdminRegister = () => {
 
 
 
-
-
-
-      {/* Register Card */}
-
-
-
-
       <div
-
-
 
         className="
         relative
@@ -271,25 +215,13 @@ const AdminRegister = () => {
         p-8
         "
 
-
-
       >
-
-
-
-
-
-
-        {/* Icon */}
-
 
 
         <div className="flex justify-center mb-6">
 
 
           <div
-
-
 
             className="
             bg-gradient-to-br
@@ -301,10 +233,7 @@ const AdminRegister = () => {
             shadow-orange-300/40
             "
 
-
-
           >
-
 
 
             <ShieldCheck
@@ -316,16 +245,10 @@ const AdminRegister = () => {
             />
 
 
-
           </div>
 
 
-
         </div>
-
-
-
-
 
 
 
@@ -349,10 +272,7 @@ const AdminRegister = () => {
 
 
 
-
-
         <p
-
 
           className="
           text-center
@@ -361,16 +281,11 @@ const AdminRegister = () => {
           mb-8
           "
 
-
         >
 
           Create your Study Admin account
 
         </p>
-
-
-
-
 
 
 
@@ -386,16 +301,7 @@ const AdminRegister = () => {
 
 
 
-
-
-
-
-          {/* Name */}
-
-
-
           <div className="relative">
-
 
             <User
 
@@ -411,30 +317,19 @@ const AdminRegister = () => {
             />
 
 
-
             <input
-
 
               type="text"
 
-
               name="name"
-
 
               placeholder="Full Name"
 
-
-
               value={formData.name}
-
-
 
               onChange={handleChange}
 
-
-
               required
-
 
 
               className="
@@ -449,24 +344,13 @@ const AdminRegister = () => {
               bg-white/90
               focus:ring-2
               focus:ring-orange-400
-              focus:border-orange-400
               "
 
             />
 
-
-
           </div>
 
 
-
-
-
-
-
-
-
-          {/* Email */}
 
 
 
@@ -487,30 +371,19 @@ const AdminRegister = () => {
             />
 
 
-
             <input
-
 
               type="email"
 
-
               name="email"
-
 
               placeholder="Email Address"
 
-
-
               value={formData.email}
-
-
 
               onChange={handleChange}
 
-
-
               required
-
 
 
               className="
@@ -525,7 +398,6 @@ const AdminRegister = () => {
               bg-white/90
               focus:ring-2
               focus:ring-orange-400
-              focus:border-orange-400
               "
 
             />
@@ -537,17 +409,7 @@ const AdminRegister = () => {
 
 
 
-
-
-
-
-          {/* Password */}
-
-
-
-
           <div className="relative">
-
 
 
             <Lock
@@ -564,10 +426,7 @@ const AdminRegister = () => {
             />
 
 
-
             <input
-
-
 
               type={
                 showPassword
@@ -577,26 +436,15 @@ const AdminRegister = () => {
                 "password"
               }
 
-
-
               name="password"
-
-
 
               placeholder="Password"
 
-
-
               value={formData.password}
-
-
 
               onChange={handleChange}
 
-
-
               required
-
 
 
               className="
@@ -611,7 +459,6 @@ const AdminRegister = () => {
               bg-white/90
               focus:ring-2
               focus:ring-orange-400
-              focus:border-orange-400
               "
 
             />
@@ -620,43 +467,27 @@ const AdminRegister = () => {
 
             <button
 
-
               type="button"
 
-
-
               onClick={()=>setShowPassword(!showPassword)}
-
-
 
               className="
               absolute
               right-3
               top-3.5
-              hover:text-orange-500
               "
-
 
             >
 
-
               {
-
                 showPassword
-
                 ?
-
                 <EyeOff size={20}/>
-
                 :
-
                 <Eye size={20}/>
-
               }
 
-
             </button>
-
 
 
           </div>
@@ -665,17 +496,7 @@ const AdminRegister = () => {
 
 
 
-
-
-
-
-          {/* Confirm Password */}
-
-
-
-
           <div className="relative">
-
 
 
             <Lock
@@ -692,10 +513,7 @@ const AdminRegister = () => {
             />
 
 
-
             <input
-
-
 
               type={
                 showConfirm
@@ -704,27 +522,21 @@ const AdminRegister = () => {
                 :
                 "password"
               }
-
 
 
               name="confirmPassword"
 
 
-
               placeholder="Confirm Password"
-
 
 
               value={formData.confirmPassword}
 
 
-
               onChange={handleChange}
 
 
-
               required
-
 
 
               className="
@@ -739,7 +551,6 @@ const AdminRegister = () => {
               bg-white/90
               focus:ring-2
               focus:ring-orange-400
-              focus:border-orange-400
               "
 
             />
@@ -748,66 +559,39 @@ const AdminRegister = () => {
 
             <button
 
-
               type="button"
 
-
-
               onClick={()=>setShowConfirm(!showConfirm)}
-
-
 
               className="
               absolute
               right-3
               top-3.5
-              hover:text-orange-500
               "
-
 
             >
 
-
               {
-
                 showConfirm
-
                 ?
-
                 <EyeOff size={20}/>
-
                 :
-
                 <Eye size={20}/>
-
               }
 
 
             </button>
 
 
-
           </div>
 
-
-
-
-
-
-
-
-
-          {/* Register Button */}
 
 
 
 
           <button
 
-
             disabled={loading}
-
-
 
             className="
             w-full
@@ -821,43 +605,25 @@ const AdminRegister = () => {
             rounded-xl
             font-semibold
             shadow-lg
-            shadow-orange-300/40
             transition
             "
 
-
           >
 
-
-
             {
-
               loading
-
               ?
-
               "Creating Account..."
-
               :
-
               "Register"
-
             }
-
-
 
 
           </button>
 
 
 
-
-
         </form>
-
-
-
-
 
 
 
@@ -868,25 +634,18 @@ const AdminRegister = () => {
 
           <p className="text-gray-600">
 
-
             Already have an account?
-
 
 
             <Link
 
-
               to="/admin/login"
-
-
 
               className="
               text-orange-500
               font-semibold
               ml-2
-              hover:text-orange-600
               "
-
 
             >
 
@@ -895,30 +654,20 @@ const AdminRegister = () => {
             </Link>
 
 
-
           </p>
 
 
         </div>
 
 
-
-
-
-
       </div>
-
-
-
 
 
     </div>
 
-
   );
 
 };
-
 
 
 export default AdminRegister;
