@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import api from "../../api/axios";
 
 import {
   Mail,
@@ -15,27 +15,24 @@ const AdminLogin = () => {
 
   const navigate = useNavigate();
 
+  const [showPassword, setShowPassword] = useState(false);
 
-  const [showPassword,setShowPassword] = useState(false);
-
-
-  const [formData,setFormData] = useState({
-    email:"",
-    password:"",
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
   });
 
-
-  const [loading,setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(false);
 
 
-  const handleChange = (e)=>{
+
+  const handleChange = (e) => {
 
     setFormData({
 
       ...formData,
 
-      [e.target.name]:e.target.value
+      [e.target.name]: e.target.value
 
     });
 
@@ -44,22 +41,20 @@ const AdminLogin = () => {
 
 
 
-
-  const handleSubmit = async(e)=>{
+  const handleSubmit = async (e) => {
 
     e.preventDefault();
 
 
-    try{
+    try {
 
       setLoading(true);
 
 
-      const res = await axios.post(
-        "http://localhost:5000/api/admin/login",
+      const res = await api.post(
+        "/admin/login",
         formData
       );
-
 
 
       localStorage.setItem(
@@ -68,12 +63,10 @@ const AdminLogin = () => {
       );
 
 
-
       localStorage.setItem(
         "admin",
         JSON.stringify(res.data.admin)
       );
-
 
 
       alert("Login Successful");
@@ -82,16 +75,19 @@ const AdminLogin = () => {
       navigate("/admin/dashboard");
 
 
-    }
-    catch(error){
+    } catch (error) {
+
+
+      console.log(error);
+
 
       alert(
         error.response?.data?.message ||
         "Login Failed"
       );
 
-    }
-    finally{
+
+    } finally {
 
       setLoading(false);
 
@@ -104,12 +100,9 @@ const AdminLogin = () => {
 
 
 
-
   return (
 
-
     <div
-
 
       className="
       min-h-screen
@@ -123,7 +116,6 @@ const AdminLogin = () => {
       bg-center
       "
 
-
       style={{
 
         backgroundImage:
@@ -131,15 +123,7 @@ const AdminLogin = () => {
 
       }}
 
-
     >
-
-
-
-
-
-      {/* Soft Background Overlay */}
-
 
 
       <div
@@ -154,15 +138,6 @@ const AdminLogin = () => {
         "
 
       ></div>
-
-
-
-
-
-
-
-      {/* Background Glow Effects */}
-
 
 
 
@@ -181,8 +156,6 @@ const AdminLogin = () => {
         "
 
       ></div>
-
-
 
 
 
@@ -205,16 +178,7 @@ const AdminLogin = () => {
 
 
 
-
-
-
-
-      {/* Login Card */}
-
-
-
       <div
-
 
         className="
         relative
@@ -234,17 +198,9 @@ const AdminLogin = () => {
 
 
 
-
-
-        {/* Logo */}
-
-
-
         <div className="flex justify-center mb-6">
 
-
           <div
-
 
             className="
             bg-gradient-to-br
@@ -258,23 +214,14 @@ const AdminLogin = () => {
 
           >
 
-
             <ShieldCheck
-
               size={42}
-
               className="text-white"
-
             />
-
 
           </div>
 
-
         </div>
-
-
-
 
 
 
@@ -298,8 +245,6 @@ const AdminLogin = () => {
 
 
 
-
-
         <p
 
           className="
@@ -319,10 +264,6 @@ const AdminLogin = () => {
 
 
 
-
-
-
-
         <form
 
           onSubmit={handleSubmit}
@@ -330,13 +271,6 @@ const AdminLogin = () => {
           className="space-y-5"
 
         >
-
-
-
-
-
-          {/* Email */}
-
 
 
 
@@ -357,31 +291,19 @@ const AdminLogin = () => {
             />
 
 
-
             <input
-
 
               type="email"
 
-
               name="email"
-
 
               placeholder="Enter Email"
 
-
-
               value={formData.email}
-
-
 
               onChange={handleChange}
 
-
-
               required
-
-
 
 
               className="
@@ -396,8 +318,6 @@ const AdminLogin = () => {
               bg-white/90
               focus:ring-2
               focus:ring-orange-400
-              focus:border-orange-400
-              transition
               "
 
             />
@@ -405,15 +325,6 @@ const AdminLogin = () => {
 
           </div>
 
-
-
-
-
-
-
-
-
-          {/* Password */}
 
 
 
@@ -437,39 +348,29 @@ const AdminLogin = () => {
 
 
 
-
             <input
-
 
 
               type={
                 showPassword
-                ?
-                "text"
-                :
-                "password"
+                ? "text"
+                : "password"
               }
-
 
 
               name="password"
 
 
-
               placeholder="Enter Password"
-
 
 
               value={formData.password}
 
 
-
               onChange={handleChange}
 
 
-
               required
-
 
 
 
@@ -485,8 +386,6 @@ const AdminLogin = () => {
               bg-white/90
               focus:ring-2
               focus:ring-orange-400
-              focus:border-orange-400
-              transition
               "
 
             />
@@ -497,38 +396,27 @@ const AdminLogin = () => {
 
             <button
 
-
               type="button"
 
-
-
-              onClick={()=>setShowPassword(!showPassword)}
-
-
+              onClick={() =>
+                setShowPassword(!showPassword)
+              }
 
               className="
               absolute
               right-3
               top-3.5
               text-gray-500
-              hover:text-orange-500
               "
 
             >
 
-
               {
-
                 showPassword
-
                 ?
-
                 <EyeOff size={20}/>
-
                 :
-
                 <Eye size={20}/>
-
               }
 
 
@@ -542,20 +430,9 @@ const AdminLogin = () => {
 
 
 
-
-
-
-          {/* Login Button */}
-
-
-
-
-
           <button
 
-
             disabled={loading}
-
 
 
             className="
@@ -570,40 +447,25 @@ const AdminLogin = () => {
             rounded-xl
             font-semibold
             shadow-lg
-            shadow-orange-300/40
             transition
             "
 
           >
 
-
             {
-
               loading
-
               ?
-
               "Logging In..."
-
               :
-
               "Login"
-
             }
-
 
 
           </button>
 
 
 
-
-
-
         </form>
-
-
-
 
 
 
@@ -619,13 +481,9 @@ const AdminLogin = () => {
             Don't have an account?
 
 
-
             <Link
 
-
               to="/admin/register"
-
-
 
               className="
               ml-2
@@ -641,22 +499,14 @@ const AdminLogin = () => {
             </Link>
 
 
-
           </p>
-
 
 
         </div>
 
 
 
-
-
-
       </div>
-
-
-
 
 
     </div>
@@ -664,7 +514,6 @@ const AdminLogin = () => {
   );
 
 };
-
 
 
 export default AdminLogin;
