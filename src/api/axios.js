@@ -1,10 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL + "/api",
-  headers: {
-    "Content-Type": "application/json",
-  },
+  baseURL: "https://studyhub-backend-0lfd.onrender.com/api",
 });
 
 export default api;
