@@ -396,7 +396,14 @@ const handlePayment = async (amount) => {
 
     const razorpay = new window.Razorpay(options);
 
-    razorpay.open();
+razorpay.on("payment.failed", function (response) {
+  console.log("Payment Failed:", response.error);
+  console.log(response);
+
+  alert(JSON.stringify(response.error, null, 2));
+});
+
+razorpay.open();
 
   } catch (err) {
     console.error(err);
