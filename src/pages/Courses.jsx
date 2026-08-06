@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import { createOrder, verifyPayment } from "../api/payment";
 
 const Courses = () => {
   const location = useLocation();
@@ -347,6 +348,62 @@ const handleSearch = () => {
     setSearchMessage("❌ No course found.");
   }
 };
+
+
+const handlePayment = async (amount) => {
+  try {
+    // Create Razorpay Order
+    const { order } = await createOrder(amount);
+
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+
+      amount: order.amount,
+
+      currency: order.currency,
+
+      name: "StudyHub",
+
+      description: "StudyHub Course Purchase",
+
+      order_id: order.id,
+
+      handler: async function (response) {
+        try {
+          const result = await verifyPayment(response);
+
+          if (result.success) {
+            alert("✅ Payment Successful");
+          } else {
+            alert("❌ Payment Verification Failed");
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Verification Error");
+        }
+      },
+
+      prefill: {
+        name: "Student",
+        email: "student@example.com",
+        contact: "9999999999",
+      },
+
+      theme: {
+        color: "#f97316",
+      },
+    };
+
+    const razorpay = new window.Razorpay(options);
+
+    razorpay.open();
+
+  } catch (err) {
+    console.error(err);
+    alert("Unable to create payment.");
+  }
+};
+
 
 return (
   <div className="min-h-screen bg-slate-50">
@@ -761,22 +818,23 @@ return (
       </ul>
 
       <button
-        className="
-        w-full
-        mt-10
-        py-4
-        rounded-xl
-        font-semibold
-        border
-        border-orange-200
-        bg-orange-50
-        text-orange-700
-        hover:bg-orange-100
-        transition-all
-        "
-      >
-        Get Started
-      </button>
+  onClick={() => handlePayment(499)}
+  className="
+    w-full
+    mt-10
+    py-4
+    rounded-xl
+    font-semibold
+    border
+    border-orange-200
+    bg-orange-50
+    text-orange-700
+    hover:bg-orange-100
+    transition-all
+  "
+>
+  Get Started
+</button>
 
     </div>
 
@@ -837,20 +895,21 @@ return (
       </ul>
 
       <button
-        className="
-        mt-10
-        w-full
-        py-4
-        rounded-xl
-        bg-white
-        text-orange-600
-        font-bold
-        hover:scale-105
-        transition-all
-        "
-      >
-        Buy Pro
-      </button>
+  onClick={() => handlePayment(999)}
+  className="
+    mt-10
+    w-full
+    py-4
+    rounded-xl
+    bg-white
+    text-orange-600
+    font-bold
+    hover:scale-105
+    transition-all
+  "
+>
+  Buy Pro
+</button>
 
     </div>
 
@@ -897,24 +956,25 @@ return (
       </ul>
 
       <button
-        className="
-        mt-10
-        w-full
-        py-4
-        rounded-xl
-        font-semibold
-        text-white
-        bg-gradient-to-r
-        from-orange-500
-        via-amber-500
-        to-yellow-500
-        hover:shadow-lg
-        hover:scale-105
-        transition-all
-        "
-      >
-        Get Premium
-      </button>
+  onClick={() => handlePayment(1499)}
+  className="
+    mt-10
+    w-full
+    py-4
+    rounded-xl
+    font-semibold
+    text-white
+    bg-gradient-to-r
+    from-orange-500
+    via-amber-500
+    to-yellow-500
+    hover:shadow-lg
+    hover:scale-105
+    transition-all
+  "
+>
+  Get Premium
+</button>
 
     </div>
 
